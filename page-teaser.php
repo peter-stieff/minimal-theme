@@ -11,12 +11,11 @@ get_header();
   if (!empty($teaser_boxes)) :
     foreach ($teaser_boxes as $box) : 
       $is_parallax = ($box['crb_box_type'] === 'image' && $box['crb_behavior'] === 'parallax');
-      $box_class = $is_parallax ? 'parallax-container' : 'content-box';
       ?>
       
-      <div class="<?php echo esc_attr($box_class); ?>" 
-           style="--box-height: <?php echo (int)($box['crb_box_height'] ?? 400); ?>px;"
-           <?php if ($is_parallax) echo ' data-parallax="true" data-speed="0.3"'; ?>>
+      <div class="<?php echo $is_parallax ? 'parallax-container' : 'content-box'; ?>" 
+           style="<?php echo $is_parallax ? '--box-height: ' . esc_attr($box['crb_box_height'] ?? '400') . 'px;' : 'height: ' . esc_attr($box['crb_box_height'] ?? '200') . 'px;'; ?>"
+           <?php if ($is_parallax) echo 'data-speed="0.3"'; ?>>
            
         <?php if ($box['crb_box_type'] === 'image' && !empty($box['crb_source'])) : ?>
           <div class="<?php echo $is_parallax ? 'parallax-bg' : 'static-bg'; ?>" 
