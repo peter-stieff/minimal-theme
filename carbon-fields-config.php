@@ -2,50 +2,58 @@
 use Carbon_Fields\Container;
 use Carbon_Fields\Field;
 
-/*
- * Diese Datei registriert eine Feldgruppe für deine Teaser-Boxen.
- * Es wird ein komplexes (repeaterartiges) Feld erstellt, in dem
- * du verschiedene Boxen anlegen kannst – z. B. Image- oder Video-Boxen.
- */
+add_action('carbon_fields_register_fields', 'crb_attach_theme_options');
 
-// Registriere die Feldgruppe, wenn Carbon Fields seine Felder laden will
-add_action('carbon_fields_register_fields', 'crb_attach_teaser_fields');
-
-function crb_attach_teaser_fields() {
-    Container::make('post_meta', 'Teaser-Boxen')
-        ->add_fields(array(
+function crb_attach_theme_options() {
+    // Teaser-Boxen Container
+    Container::make('post_meta', 'Teaser-Einstellungen')
+        ->where('post_template', '=', 'page-teaser.php')
+        ->add_fields([
             Field::make('complex', 'crb_teaser_boxes', 'Teaser-Boxen')
                 ->set_layout('tabbed-horizontal')
-                ->add_fields(array(
-                    // Auswahl des Box-Typs
+                ->add_fields([
                     Field::make('select', 'crb_box_type', 'Box-Typ')
-                        ->add_options(array(
-                            'image' => 'Image Box',
-                            'video' => 'Video Box',
-                        )),
-                    // Datei-Feld: Hier wird die Quelle (Bild oder Video) ausgewählt.
-                    // Mit set_value_type('url') wird direkt die URL zurückgegeben.
-                    Field::make('file', 'crb_source', 'Quelle (Bild oder Video)')
-                        ->set_value_type('url'),
-                    // Textfeld für den Titel
+                        ->add_options([
+                            'image'    => 'Bild',
+                            'video'    => 'Video',
+                            'gradient' => 'Verlauf',
+                            'counter'  => 'Counter'
+                        ])
+                        ->set_default_value('image'),
+                    
+                    // Gemeinsame Felder
                     Field::make('text', 'crb_title', 'Titel'),
-                    // Auswahlfeld für das Verhalten (nur für Image-Boxen sichtbar)
-                    Field::make('select', 'crb_behavior', 'Verhalten')
-                        ->add_options(array(
-                            'static'   => 'Static',
+                    Field::make('association', 'crb_link', 'Verlinkung')
+                        ->set_max(1)
+                        ->set_types([['type' => 'post', 'post_type' => 'page']]),
+                    
+                    // Bild-spezifisch
+                    Field::make('image', 'crb_image', 'Bild')
+                        ->set_value_type('url')
+                        ->conditional('crb_box_type', '=', 'image'),
+                    Field::make('select', 'crb_behavior', 'Effekt')
+                        ->add_options([
+                            'static'   => 'Statisch',
                             'parallax' => 'Parallax',
                             'zoom'     => 'Zoom'
-                        ))
-                        ->set_conditional_logic(array(
-                            array(
-                                'field' => 'crb_box_type',
-                                'value' => 'image'
-                            )
-                        )),
-                    // Feld für einen optionalen Link
-                    Field::make('text', 'crb_link', 'Link'),
-                    // Feld für einen optionalen Tooltip
-                    Field::make('text', 'crb_tooltip', 'Tooltip')
-                ))
-        ));
+                        ])
+                        ->conditional('crb_box_type', '=', 'image'),
+                    
+                    // Video-spezifisch
+                    Field::make('file', 'crb_video', 'Video')
+                        ->set_type('video')
+                        ->conditional('crb_box_type', '=', 'video'),
+                    
+                    // Gradient-spezifisch
+                    Field::make('color', 'crb_gradient_start', 'Startfarbe')
+                        ->conditional('crb_box_type', '=', 'gradient'),
+                    Field::make('color', 'crb_gradient_end', 'Endfarbe')
+                        ->conditional('crb_box_type', '=', 'gradient'),
+                    
+                    // Counter-spezifisch
+                    Field::make('text', 'crb_counter_start', 'Startwert')
+                        ->set_attribute('type', 'number')
+                        ->conditional('crb_box_type', '=', 'counter')
+                ])
+        ]);
 }
