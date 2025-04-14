@@ -1,0 +1,309 @@
+/* Font Caros-Light laden */
+@font-face {
+  font-family: 'MatterSQ';
+  src: url('../fonts/MatterSQ/MatterSQ-Regular.woff2') format('woff2'),
+       url('../fonts/MatterSQ/MatterSQ-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* RESET & BASIS */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'MatterSQ', sans-serif;
+  background: #fff;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Hauptinhalt */
+.page-container {
+  max-width: 1496px;
+  margin: 0 auto;
+  padding: 10px; /* 10px Abstand zu den Seitenrändern */
+  margin-top: 70px; /* Platz für fixierten Header */
+}
+
+/* HEADER */
+.site-header {
+  position: fixed;
+  top: 0;  /* Header klebt am oberen Bildschirmrand */
+  left: 0;
+  right: 0;
+  height: 55px; /* Header-Höhe auf 55px */
+  background: #fff;
+  z-index: 1000;
+}
+
+.header-inner {
+  max-width: 1496px;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-top: 5px;
+}
+
+/* Header Left: Logo + CREOVATE */
+.header-left {
+  display: flex;
+  align-items: center;
+  width: 200px;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+.logo svg {
+  transform: translateX(-9px);
+  height: 50px;
+  width: auto;
+  fill: #000000;
+  transition: fill 0.3s ease, color 0.3s ease;
+}
+.logo-text {
+  margin-left: -10px;
+  margin-top: -10px;
+  font-size: 1.8em;
+  font-weight: bold;
+  color: #000000;
+  transition: fill 0.3s ease, color 0.3s ease;
+}
+.logo:hover .logo-text {
+  color: #666666; /* gleiche Hover-Farbe für den Text */
+}
+.logo:hover svg path,
+.logo:hover svg circle {
+  fill: #666666; /* oder eine andere gewünschte Farbe */
+}
+
+/* Header Middle: Navigation-Chip (Desktop) / Menübutton (Mobile) */
+.header-middle {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+.nav-chip {
+  display: inline-flex;
+  align-items: center;
+  background: transparent; /* Transparent, schwebender Effekt */
+  padding: 0 10px;
+  height: 40px;
+  border-radius: 40px;
+  font-size: 0.9em;
+  margin-top: -15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  border: none;
+}
+.nav-chip a {
+  text-decoration: none;
+  color: #333;
+  margin: 0 10px;
+}
+.menu-btn {
+  display: none;
+  background: #d9db65;
+  border: none;
+  font-size: 1em;
+  cursor: pointer;
+  padding: 0 10px;
+  width: 60px;         /* Breite 60px */
+  height: 40px;
+  border-radius: 40px;
+  align-items: center;
+  justify-content: center;
+  margin-top: -15px;
+}
+.menu-btn .hamburger-icon {
+  width: 24px;
+  height: 24px;
+  fill: #000;
+  vertical-align: middle;
+  transition: fill 0.3s ease;
+}
+.menu-btn:hover .hamburger-icon rect {
+  fill: #666666; /* Gewünschte Hover-Farbe */
+}
+/* Header Right: Social Icons-Chip */
+.header-right {
+  display: flex;
+  align-items: center;
+  margin-top: -5px;
+}
+.social-icons {
+  display: inline-flex;
+  align-items: center;
+  background: transparent;
+  padding: 0 10px;
+  height: 40px;
+  border-radius: 40px;
+  gap: 10px;
+  font-size: 0.9em;
+  border: 2px solid #000000;
+}
+.social-icons svg {
+  width: 24px;
+  height: 24px;
+  fill: #000000;
+  vertical-align: middle;
+}
+.social-icons a {
+  text-decoration: none;
+  color: #333;
+}
+.social-icons svg {
+  transition: fill 0.3s ease;
+}
+
+.social-icons a:hover svg {
+  fill: #666666; /* oder die gewünschte Hover-Farbe */
+}
+
+/* Für den Social-Chip (den Container) den Border-Farbe-Hover festlegen */
+.social-icons {
+  transition: border-color 0.3s ease;
+}
+
+.social-icons:hover {
+  border-color: #666666; /* die gewünschte Hover-Farbe für den Rahmen */
+}
+
+/* Mobile-Navigation-Overlay */
+.mobile-nav-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  background: #d9db65;
+  border-radius: 20px;
+  z-index: 1500;
+  padding: 20px;
+}
+.mobile-nav-overlay ul {
+  list-style: none;
+  padding: 20px;
+  text-align: center;
+}
+.mobile-nav-overlay ul li {
+  margin: 10px 0;
+}
+.mobile-nav-overlay ul li a {
+  color: #000000;
+  font-size: 1.9em;
+  text-decoration: none;
+}
+.mobile-nav-overlay ul li.close-item a {
+  color: #fff;
+}
+.mobile-nav-overlay ul li.spacer {
+  height: 20px;
+}
+
+/* SLIDESHOW-BOX (Box1: 299-Counter) */
+.slideshow-box {
+  position: relative;
+  width: 100%;
+  height: 250px; /* 230px SVG + 10px Rand oben und unten */
+  margin-bottom: 10px;
+  background: #f7f6ef;
+  border-radius: 20px;
+  overflow: hidden;
+  text-decoration: none;
+  display: block;
+}
+.special-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+.special-container svg {
+  width: 230px;
+  height: 230px;
+}
+
+/* NEUER PFEIL: Schwarzer Kreis (50px) mit weißem Pfeil (24px) */
+.more-arrow {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+}
+.more-arrow .arrow-background {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background: #000;
+  border-radius: 50%;
+}
+.more-arrow .arrow-container {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.more-arrow .arrow-icon {
+  width: 24px;
+  height: 24px;
+  fill: #fff;
+  transition: transform 0.3s ease;
+}
+.more-arrow:hover .arrow-icon {
+  transform: rotate(-30deg) scale(1.1);
+}
+
+/* CONTENT-BOXEN (z.B. für die Videobox, Dummy-Boxen etc.) */
+.content-box {
+  width: 100%;
+  margin-bottom: 10px;
+  height: 200px;
+  border-radius: 20px;
+  background: #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2em;
+  overflow: hidden; /* Verhindert, dass Inhalte den Rand verlassen */
+}
+
+/* Zusätzliche Styles für Carbon Fields Repeater (falls benötigt) */
+.carbon-complex-container {
+  margin-top: 10px;
+}
+.carbon-complex-item {
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  padding: 5px;
+  border-radius: 10px;
+  background: #f9f9f9;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header-middle .nav-chip {
+    display: none;
+  }
+  .menu-btn {
+    display: flex;
+  }
+}

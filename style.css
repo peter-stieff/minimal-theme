@@ -1,0 +1,19 @@
+/*
+Theme Name: Minimal Theme
+Theme URI: http://creovate.local/
+Author: Peter Stieff
+Author URI: http://creovate.local/
+Description: Ein minimalistisches, selbst entwickeltes WordPress-Theme.
+Version: 1.0
+License: GPLv2 or later
+Text Domain: minimal-theme
+*/
+
+/* Basis-Styles */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'MatterSQ', sans-serif;
+  background: #fff;
+  color: #333;
+}
