@@ -1,11 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('DOMContentLoaded ausgelöst – Script läuft.');
+    console.log('DOMContentLoaded ausgelöst – Script läuft.');
 
   // ===== Burger-Button und Overlay =====
   var menuBtn = document.getElementById('menu-btn');
   var mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
 
-  // ===== Burger-Button toggelt das Overlay =====
   if (menuBtn && mobileNavOverlay) {
     menuBtn.addEventListener('click', function() {
       if (mobileNavOverlay.style.display === 'block') {
@@ -18,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
   } else {
     console.log('Burger-Button oder Overlay nicht gefunden:', { menuBtn, mobileNavOverlay });
   }
-  
+
   // ===== Schließen-Link im Overlay =====
   if (mobileNavOverlay) {
     var closeLink = mobileNavOverlay.querySelector('.close-link');
@@ -32,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
       console.log('Close-Link nicht gefunden.');
     }
   }
-    
+
   // ===== 299-Counter Animation =====
   var counterEl = document.getElementById('specialCounter');
   if (counterEl) {
@@ -63,78 +62,28 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Counter-Element (#specialCounter) nicht gefunden.');
   }
 
-  // ===== Parallax-Effekt für Image-Boxen =====
-  const parallaxBoxes = document.querySelectorAll('.behavior-parallax');
-  console.log('Parallax-Boxen gefunden:', parallaxBoxes.length, parallaxBoxes);
+// ===== Parallax-Effekt für .parallax-container Boxen =====
+(() => {
+  const parallaxElements = document.querySelectorAll('.parallax-container');
+  const strength = 0.3;
 
-  let ticking = false;
+  let requestId = null;
 
-  function updateParallax() {
-    console.log('updateParallax aufgerufen.');
-    
-    if (parallaxBoxes.length === 0) {
-      console.log('Keine Parallax-Boxen vorhanden, überspringe.');
-      ticking = false;
-      return;
-    }
+  function updateParallaxContainers() {
+    const scrollY = window.scrollY || window.pageYOffset;
 
-    parallaxBoxes.forEach((box, index) => {
-      const img = box.querySelector('.parallax-image');
-      if (!img) {
-        console.log(`Parallax-Box ${index}: Kein .parallax-image gefunden.`, box);
-        return;
-      }
-
-      console.log(`Parallax-Box ${index}: Bild gefunden.`, img.src);
-
-      // Position der Box relativ zum Viewport
-      const rect = box.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-
-      console.log(`Parallax-Box ${index}: rect.top=${rect.top}, rect.bottom=${rect.bottom}, windowHeight=${windowHeight}`);
-
-      // Nur berechnen, wenn die Box im sichtbaren Bereich ist
-      if (rect.top < windowHeight && rect.bottom > 0) {
-        const scrollPosition = window.scrollY;
-        const boxTop = rect.top + scrollPosition;
-        const boxHeight = rect.height;
-
-        const parallaxSpeed = 0.3;
-        const offset = (scrollPosition - boxTop) * parallaxSpeed;
-        const maxOffset = (img.offsetHeight - boxHeight) / 2;
-        const clampedOffset = Math.max(-maxOffset, Math.min(maxOffset, offset));
-
-        console.log(`Parallax-Box ${index}: scrollPosition=${scrollPosition}, boxTop=${boxTop}, boxHeight=${boxHeight}, offset=${offset}, clampedOffset=${clampedOffset}`);
-
-        // Wende die Verschiebung an
-        img.style.transform = `translateY(${clampedOffset}px)`;
-        console.log(`Parallax-Box ${index}: transform=translateY(${clampedOffset}px) gesetzt.`);
-      } else {
-        console.log(`Parallax-Box ${index}: Außerhalb des sichtbaren Bereichs.`);
-      }
+    parallaxElements.forEach(el => {
+      el.style.transform = `translate3d(0, ${scrollY * strength}px, 0)`;
     });
-    ticking = false;
+
+    requestId = null;
   }
 
-  // Event-Listener für Scroll mit requestAnimationFrame
-  window.addEventListener('scroll', () => {
-    console.log('Scroll-Event ausgelöst.');
-    if (!ticking) {
-      requestAnimationFrame(updateParallax);
-      ticking = true;
+  function onScrollParallax() {
+    if (!requestId) {
+      requestId = requestAnimationFrame(updateParallaxContainers);
     }
-  });
+  }
 
-  // Event-Listener für Resize
-  window.addEventListener('resize', () => {
-    console.log('Resize-Event ausgelöst.');
-    if (!ticking) {
-      requestAnimationFrame(updateParallax);
-      ticking = true;
-    }
-  });
-
-  // Initialer Aufruf
-  console.log('Initialer Aufruf von updateParallax.');
-  updateParallax();
-});
+  window.addEventListener('scroll', onScrollParallax, { passive: true });
+})();
