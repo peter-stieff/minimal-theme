@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOMContentLoaded ausgelöst – Script läuft.');
+  console.log('DOMContentLoaded ausgelöst – Script läuft.');
 
   // ===== Burger-Button und Overlay =====
   var menuBtn = document.getElementById('menu-btn');
@@ -62,7 +62,73 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Counter-Element (#specialCounter) nicht gefunden.');
   }
 
-// ===== Parallax-Effekt für .parallax-container Boxen =====
+  // ===== Parallax-Effekt für .behavior-parallax Boxen =====
+  const parallaxBoxes = document.querySelectorAll('.behavior-parallax');
+  console.log('Parallax-Boxen gefunden:', parallaxBoxes.length, parallaxBoxes);
+
+  let ticking = false;
+
+  function updateBehaviorParallax() {
+    console.log('updateParallax aufgerufen.');
+
+    if (parallaxBoxes.length === 0) {
+      console.log('Keine Parallax-Boxen vorhanden, überspringe.');
+      ticking = false;
+      return;
+    }
+
+    parallaxBoxes.forEach((box, index) => {
+      const img = box.querySelector('.parallax-image');
+      if (!img) {
+        console.log(`Parallax-Box ${index}: Kein .parallax-image gefunden.`, box);
+        return;
+      }
+
+      console.log(`Parallax-Box ${index}: Bild gefunden.`, img.src);
+
+      const rect = box.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+
+      if (rect.top < windowHeight && rect.bottom > 0) {
+        const scrollPosition = window.scrollY;
+        const boxTop = rect.top + scrollPosition;
+        const boxHeight = rect.height;
+
+        const parallaxSpeed = 0.3;
+        const offset = (scrollPosition - boxTop) * parallaxSpeed;
+        const maxOffset = (img.offsetHeight - boxHeight) / 2;
+        const clampedOffset = Math.max(-maxOffset, Math.min(maxOffset, offset));
+
+        img.style.transform = `translateY(${clampedOffset}px)`;
+        console.log(`Parallax-Box ${index}: transform=translateY(${clampedOffset}px) gesetzt.`);
+      } else {
+        console.log(`Parallax-Box ${index}: Außerhalb des sichtbaren Bereichs.`);
+      }
+    });
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    console.log('Scroll-Event ausgelöst.');
+    if (!ticking) {
+      requestAnimationFrame(updateBehaviorParallax);
+      ticking = true;
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    console.log('Resize-Event ausgelöst.');
+    if (!ticking) {
+      requestAnimationFrame(updateBehaviorParallax);
+      ticking = true;
+    }
+  });
+
+  console.log('Initialer Aufruf von updateParallax.');
+  updateBehaviorParallax();
+});
+
+// ===== Parallax-Effekt für .parallax-container Boxen (neue Struktur) =====
 (() => {
   const parallaxElements = document.querySelectorAll('.parallax-container');
   const strength = 0.3;
