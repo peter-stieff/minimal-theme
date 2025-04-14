@@ -319,6 +319,7 @@ body {
 .parallax-container {
   position: relative;
   height: 60vh; /* Fallback für mobile Geräte */
+  /*height: var(--box-height, 400px);*/
   min-height: 400px;
   overflow: hidden;
   border-radius: 12px; /* Dein Design */
@@ -376,4 +377,26 @@ body {
   .parallax-bg {
     transform: none !important; /* Barrierefreiheit */
   }
+}
+
+/* Korrigiert fehlenden Hintergrund */
+.parallax-bg {
+  background-color: transparent !important; /* Überschreibt WP-Standard */
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 1 !important; /* Gegen mögliche Theme-Overrides */
+}
+
+/* Container-Höhe fixieren */
+.parallax-container {
+  background-color: #f0f0f0; /* Fallback-Farbe */
+  position: relative;
+}
+
+/* Inhalt sichtbar machen */
+.parallax-content {
+  position: relative;
+  z-index: 10; /* Höher als der Hintergrund */
+  color: #000; /* Textfarbe erzwingen */
+  mix-blend-mode: normal; /* Temporär deaktivieren */
 }
